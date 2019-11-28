@@ -3,6 +3,7 @@ package com.fullstack.ppmtool.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fullstack.ppmtool.domain.Project;
 import com.fullstack.ppmtool.repositories.ProjectRepositories;
 
 @Service
