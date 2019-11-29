@@ -5,12 +5,12 @@ import org.springframework.stereotype.Service;
 
 import com.fullstack.ppmtool.domain.Project;
 import com.fullstack.ppmtool.exceptions.ProjectIdException;
-import com.fullstack.ppmtool.repositories.ProjectRepositories;
+import com.fullstack.ppmtool.repositories.ProjectRepository;
 
 @Service
 public class ProjectService {
 	@Autowired
-	private ProjectRepositories projectRepository;
+	private ProjectRepository projectRepository;
 	
 	public Project saveOrUpdateProject(Project project){
 		try{
@@ -18,5 +18,17 @@ public class ProjectService {
 		}catch(Exception e){
 			throw new ProjectIdException("Project Id: '"+ project.getProjectIdentifier().toUpperCase()+"' already exist");
 		}
+	}
+	
+	public Project findByIdentifier(String projectId){	
+		Project project = projectRepository.findByProjectIdentifier(projectId);
+		if(project==null){
+			throw new ProjectIdException("Project Id: '"+ projectId+"' does not exist");
+		}
+		return project;
+	}
+	
+	public Iterable<Project> findAllProjects(){
+		return projectRepository.findAll();
 	}
 }
