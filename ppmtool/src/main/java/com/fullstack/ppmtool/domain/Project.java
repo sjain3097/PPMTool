@@ -100,4 +100,15 @@ public class Project {
 	protected void onUpdate(){
 		this.updatedAt = new Date();
 	}
+
+
+	@Override
+	public String toString() {
+		return "Project [id=" + id + ", projectName=" + projectName
+				+ ", projectIdentifier=" + projectIdentifier + ", description="
+				+ description + ", startDate=" + startDate + ", endDate="
+				+ endDate + ", createdAt=" + createdAt + ", updatedAt="
+				+ updatedAt + "]";
+	}
+	
 }	

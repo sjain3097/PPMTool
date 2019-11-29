@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 
 
 
@@ -63,7 +65,13 @@ public class ProjectController {
 	
 	@DeleteMapping("/{projectId}")
 	public ResponseEntity<?> deleteProjectById(@PathVariable("projectId") String projectId){
-		Project project = projectService.deleteProjectByIdentifier(projectId);
+		Project project = projectService.deleteProjectByIdentifier(projectId.toUpperCase());
 		return new ResponseEntity<Project>(project, HttpStatus.OK);
+	}
+	
+	@PutMapping("/{projectId}")
+	public ResponseEntity<?> updateProjectById(@RequestBody Project project, @PathVariable("projectId") String projectId){
+		Project updatedProject = projectService.updateByProjectId(project, projectId);
+		return new ResponseEntity<Project>(updatedProject, HttpStatus.OK);
 	}
 }
