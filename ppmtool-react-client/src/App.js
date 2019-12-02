@@ -5,7 +5,8 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import {BrowserRouter as Router, Route} from 'react-router-dom'
 import AddProject from './component/project/AddProject';
 import ProjectBoard from './component/project/ProjectBoard';
-
+import {Provider} from 'react-redux'
+import store from './store';
 class App extends Component {
   state = {  }
   render() {  
@@ -13,10 +14,13 @@ class App extends Component {
       
         <Router>
           <div className="app">
-            <Header />
-            <Route exact path="/dashboard" component={Dashboard}/>
-            <Route exact path="/addProject" component={AddProject}/>
-            <Route exact path="/projectBoard" component={ProjectBoard}/>
+          <Header />
+            <Provider store={store}>
+              <Route exact path="/dashboard" component={Dashboard}/>
+              <Route exact path="/addProject" component={AddProject}/>
+              <Route exact path="/projectBoard" component={ProjectBoard}/>              
+            </Provider>
+            
           </div>
         </Router>
      );
