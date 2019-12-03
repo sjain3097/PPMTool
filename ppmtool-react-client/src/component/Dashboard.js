@@ -1,9 +1,17 @@
 import React, { Component } from 'react';
 import ProjectItem from './project/ProjectItem';
-import '../App.css'
+import '../App.css';
 import CreateProjectButton from './project/CreateProjectButton';
+import {connect} from 'react-redux';
+import {getProjects} from '../actions/ProjectActions'
+import PropTypes from 'prop-types'
 class Dashboard extends Component {
     state = {  }
+
+    componentDidMount(){
+        this.props.getProjects();
+    }
+
     render() { 
         return ( 
             <div className="projects">
@@ -27,5 +35,14 @@ class Dashboard extends Component {
          );
     }
 }
- 
-export default Dashboard;
+
+Dashboard.propType= {
+    project: PropTypes.object.isRequired,
+    getProjects: PropTypes.func.isRequired
+}
+
+const mapStateToProps = state => ({
+    project: state.project
+})
+
+export default connect(mapStateToProps, {getProjects})(Dashboard);
