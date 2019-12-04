@@ -47,6 +47,7 @@ public class ProjectController {
 	
 	@PostMapping("")
 	public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result){
+		System.out.println(result);
 		ResponseEntity<?> mapValidationService = validationErrorService.mapValidationService(result);
 		if(mapValidationService!=null){
 			return mapValidationService;
@@ -73,8 +74,14 @@ public class ProjectController {
 	}
 	
 	@PutMapping("/{projectId}")
-	public ResponseEntity<?> updateProjectById(@RequestBody Project project, @PathVariable("projectId") String projectId){
-		Project updatedProject = projectService.updateByProjectId(project, projectId);
+	public ResponseEntity<?> updateProjectById(@Valid @RequestBody Project project,   BindingResult result,  @PathVariable("projectId") String projectId){
+		System.out.println(result);
+		ResponseEntity<?> mapValidationService = validationErrorService.mapValidationService(result);
+		System.out.println(mapValidationService+"+++++++++++++++++++++++++++++++++++");
+		if(mapValidationService!=null){
+			return mapValidationService;
+		}
+		Project updatedProject = projectService.updateByProjectId(project, projectId.toUpperCase());
 		return new ResponseEntity<Project>(updatedProject, HttpStatus.OK);
 	}
 }

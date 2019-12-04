@@ -7,6 +7,7 @@ import AddProject from './component/project/AddProject';
 import ProjectBoard from './component/project/ProjectBoard';
 import {Provider} from 'react-redux'
 import store from './store';
+import UpdateProject from './component/project/UpdateProject';
 class App extends Component {
   state = {  }
   render() {  
@@ -18,7 +19,8 @@ class App extends Component {
             <Provider store={store}>
               <Route exact path="/dashboard" component={Dashboard}/>
               <Route exact path="/addProject" component={AddProject}/>
-              <Route exact path="/projectBoard" component={ProjectBoard}/>              
+              <Route exact path="/projectBoard" component={ProjectBoard}/>
+              <Route path="/updateProject/:id" component={UpdateProject} />          
             </Provider>
             
           </div>
