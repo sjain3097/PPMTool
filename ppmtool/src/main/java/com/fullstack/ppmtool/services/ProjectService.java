@@ -3,6 +3,7 @@ package com.fullstack.ppmtool.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fullstack.ppmtool.domain.Backlog;
 import com.fullstack.ppmtool.domain.Project;
 import com.fullstack.ppmtool.exceptions.ProjectIdException;
 import com.fullstack.ppmtool.repositories.ProjectRepository;
@@ -12,8 +13,15 @@ public class ProjectService {
 	@Autowired
 	private ProjectRepository projectRepository;
 	
-	public Project saveOrUpdateProject(Project project){
+	public Project saveProject(Project project){
 		try{
+			project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+			if(project.getId()==null){
+				Backlog backlog = new Backlog(); 
+				project.setBacklog(backlog);
+				backlog.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
+				backlog.setProject(project);
+			}
 			return projectRepository.save(project);
 		}catch(Exception e){
 			throw new ProjectIdException("Project Id: '"+ project.getProjectIdentifier().toUpperCase()+"' already exist");

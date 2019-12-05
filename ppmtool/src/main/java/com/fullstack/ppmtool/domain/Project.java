@@ -2,10 +2,13 @@ package com.fullstack.ppmtool.domain;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.validation.constraints.NotBlank;
@@ -17,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 public class Project {
 	@Id
 	@GeneratedValue
-	private long id;
+	private Long id;
 	@NotBlank(message="Project name is Required")
 	private String projectName;
 	@NotBlank(message="Project  identifier is required")
@@ -35,16 +38,26 @@ public class Project {
 	private Date createdAt;
 	@JsonFormat(pattern="yyyy-mm-dd")
 	private Date updatedAt;
-	
+	@OneToOne(fetch=FetchType.EAGER, cascade=CascadeType.ALL, mappedBy="project")
+	private Backlog backlog;
 	public  Project(){
 		
 	}
-	
-	
-	public long getId() {
+
+	public Backlog getBacklog() {
+		return backlog;
+	}
+
+
+	public void setBacklog(Backlog backlog) {
+		this.backlog = backlog;
+	}
+
+
+	public Long getId() {
 		return id;
 	}
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 	public String getProjectName() {

@@ -51,7 +51,7 @@ public class ProjectController {
 		if(mapValidationService!=null){
 			return mapValidationService;
 		}
-		Project saveOrUpdateProject = projectService.saveOrUpdateProject(project);
+		Project saveOrUpdateProject = projectService.saveProject(project);
 		return new ResponseEntity<Project> (saveOrUpdateProject, HttpStatus.CREATED);
 	}
 	
@@ -73,10 +73,10 @@ public class ProjectController {
 	}
 	
 	@PutMapping("/{projectId}")
-	public ResponseEntity<?> updateProjectById(@Valid @RequestBody Project project,   BindingResult result,  @PathVariable("projectId") String projectId){
+	public ResponseEntity<?> updateProjectById(@Valid @RequestBody Project project,   BindingResult result,  
+			@PathVariable("projectId") String projectId){
 		System.out.println(result);
 		ResponseEntity<?> mapValidationService = validationErrorService.mapValidationService(result);
-		System.out.println(mapValidationService+"+++++++++++++++++++++++++++++++++++");
 		if(mapValidationService!=null){
 			return mapValidationService;
 		}
