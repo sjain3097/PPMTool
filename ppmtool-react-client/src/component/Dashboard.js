@@ -24,6 +24,7 @@ class Dashboard extends Component {
                             <CreateProjectButton/>
                             <br />
                             <hr />
+                            {console.log(projects)}
                             {
                                 projects.map(project=>(
                                     <ProjectItem key={project.id} project={project} />

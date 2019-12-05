@@ -20,7 +20,8 @@ class App extends Component {
               <Route exact path="/dashboard" component={Dashboard}/>
               <Route exact path="/addProject" component={AddProject}/>
               <Route exact path="/projectBoard" component={ProjectBoard}/>
-              <Route path="/updateProject/:id" component={UpdateProject} />          
+              <Route path="/updateProject/:id" component={UpdateProject} />
+              {/* <Route path="/deleteProject/:id"/>     */}   
             </Provider>
             
           </div>
