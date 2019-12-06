@@ -8,13 +8,17 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fullstack.ppmtool.domain.Backlog;
 import com.fullstack.ppmtool.domain.ProjectTask;
+import com.fullstack.ppmtool.exceptions.ProjectNotFoundException;
+import com.fullstack.ppmtool.repositories.BacklogRepository;
 import com.fullstack.ppmtool.services.MapValidationErrorService;
 import com.fullstack.ppmtool.services.ProjectTaskService;
 
@@ -40,5 +44,18 @@ public class BacklogController {
 	public ResponseEntity<Iterable<ProjectTask>> getProjectBacklog(@PathVariable String backlog_id){
 		return new ResponseEntity<Iterable<ProjectTask>>(projectTaskService.findBacklogById(backlog_id), HttpStatus.OK);
 	}
+	@GetMapping("/{backlog_id}/{project_sequence}")
+	public ResponseEntity<ProjectTask> getProjectTask(@PathVariable("backlog_id") String backlog_id, 
+			@PathVariable("project_sequence") String project_sequence){
+		return new ResponseEntity<ProjectTask>(projectTaskService.findByPTProjectSequence(backlog_id, project_sequence), HttpStatus.OK);
+	}
 	
+	@PatchMapping("/{backlog_id}/{pt_id}")
+	public ResponseEntity<?> updateProjectTask(@Valid @RequestBody ProjectTask projectTask,
+			BindingResult result,@	PathVariable String backlog_id, @PathVariable String pt_id){
+		ResponseEntity<?> errorMap = mapValidationErrorService.mapValidationService(result);
+		if(errorMap != null) return errorMap;
+		ProjectTask updateProject = projectTaskService.updatePTbyProjectSequence(projectTask, backlog_id, pt_id);
+		return new ResponseEntity<ProjectTask>(updateProject, HttpStatus.OK);
+	}
 }
