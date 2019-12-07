@@ -69,19 +69,14 @@ public class ProjectTaskService {
 	 }
 	 
 	 public ProjectTask updatePTbyProjectSequence(ProjectTask updatedTask, String backlog_id, String pt_id){
-		 Backlog backlog = backlogRepository.findByProjectIdentifier(backlog_id);
-		 if(backlog == null){
-			throw new ProjectNotFoundException("backlog does not exist");
-		}
 		ProjectTask projectTask = findByPTProjectSequence(backlog_id, pt_id);
-		if(projectTask == null){
-			throw new ProjectNotFoundException("project task does not exist");
-		}
-		if(!projectTask.getProjectIdentifier().equals(backlog_id)){
-			throw new ProjectNotFoundException("Project_task "+pt_id
-					+" does not exist in Project "+backlog_id);
-		}
 		projectTask = updatedTask;
 		return projectTaskRepository.save(projectTask);
+	 }
+	 
+	 public void deletePTByProjectSequence(String backlog_id, String pt_id) {
+		 ProjectTask projectTask = findByPTProjectSequence(backlog_id, pt_id);
+		 //System.out.println(projectTask);
+		 projectTaskRepository.delete(projectTask);
 	 }
 }
