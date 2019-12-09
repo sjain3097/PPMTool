@@ -56,5 +56,4 @@ export const deleteProject = (id, history) => async dispatch =>{
             payload: id
         })    
     }
-    
 }
