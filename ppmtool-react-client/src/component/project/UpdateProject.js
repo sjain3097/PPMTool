@@ -143,7 +143,7 @@ UpdateProject.propTypes = {
     getProject: PropTypes.func.isRequired,
     updateProject: PropTypes.func.isRequired,
     project: PropTypes.object.isRequired,
-    error: PropTypes.object.isRequired
+    errors: PropTypes.object.isRequired
 }
 
  const mapStateToProps = state => ({

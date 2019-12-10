@@ -147,7 +147,7 @@ public class ProjectTask {
 
 	@Override
 	public String toString() {
-		return "PojectTask [id=" + id + ", projectSequence=" + projectSequence
+		return "ProjectTask [id=" + id + ", projectSequence=" + projectSequence
 				+ ", summary=" + summary + ", acceptanceCriteria="
 				+ acceptanceCriteria + ", status=" + status + ", priority="
 				+ priority + ", dueDate=" + dueDate + ", projectIdentifier="
