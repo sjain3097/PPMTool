@@ -7,6 +7,7 @@ import com.fullstack.ppmtool.domain.Backlog;
 import com.fullstack.ppmtool.domain.Project;
 import com.fullstack.ppmtool.domain.User;
 import com.fullstack.ppmtool.exceptions.ProjectIdException;
+import com.fullstack.ppmtool.exceptions.ProjectNotFoundException;
 import com.fullstack.ppmtool.repositories.ProjectRepository;
 import com.fullstack.ppmtool.repositories.UserRepository;
 
@@ -36,29 +37,31 @@ public class ProjectService {
 		}
 	}
 	
-	public Project findByIdentifier(String projectId){	
+	public Project findByIdentifier(String projectId, String username){	
 		Project project = projectRepository.findByProjectIdentifier(projectId);
 		if(project==null){
 			throw new ProjectIdException("Project Id: '"+ projectId+"' does not exist");
 		}
+		if(!project.getProjectLeader().equals(username)){
+			throw new ProjectNotFoundException("No such Project: "+project.getProjectIdentifier()+" exist in your account");
+		}
 		return project;
 	}
 	
-	public Iterable<Project> findAllProjects(){
-		return projectRepository.findAll();
+	public Iterable<Project> findAllProjects(String username){
+		return projectRepository.findAllByProjectLeader(username);
 	}
-	public Project deleteProjectByIdentifier(String projectId){
-		Project project= projectRepository.findByProjectIdentifier(projectId);
-		if(project == null){
-			throw new ProjectIdException("This Project id: '"+projectId+"' does not exist and thus cannot delete it");
-		}
-		projectRepository.delete(project);
-		return project;
+	public void deleteProjectByIdentifier(String projectId, String username){
+		
+		projectRepository.delete(findByIdentifier(projectId, username));
 	}
-	public Project updateByProjectId(Project project, String projectId){
+	public Project updateByProjectId(Project project, String projectId, String username){
 			Project updateProject = projectRepository.findByProjectIdentifier(projectId);
 			if(updateProject == null){
 				throw new ProjectIdException("This Project id: '"+projectId+"' does not exist");
+			}
+			if(!updateProject.getProjectLeader().equals(username)){
+				throw new ProjectNotFoundException("Project: "+updateProject.getProjectIdentifier()+" does not exists");
 			}
 			updateProject.setDescription(project.getDescription());
 			updateProject.setProjectName(project.getProjectName());

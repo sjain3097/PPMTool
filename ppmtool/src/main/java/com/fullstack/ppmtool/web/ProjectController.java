@@ -58,31 +58,29 @@ public class ProjectController {
 	}
 	
 	@GetMapping("/{projectId}")
-	public ResponseEntity<?> getProjectById(@PathVariable("projectId") String projectId){
-		Project project = projectService.findByIdentifier(projectId.toUpperCase());
+	public ResponseEntity<?> getProjectById(@PathVariable("projectId") String projectId, Principal principal){
+		Project project = projectService.findByIdentifier(projectId.toUpperCase(), principal.getName());
 		return new ResponseEntity<Project> (project, HttpStatus.OK);
 	}
 	
 	@GetMapping("/all")
-	public Iterable<Project> getAllProjects(){
-		return projectService.findAllProjects();
+	public Iterable<Project> getAllProjects(Principal principal){
+		return projectService.findAllProjects(principal.getName());
 	}
 	
 	@DeleteMapping("/{projectId}")
-	public ResponseEntity<?> deleteProjectById(@PathVariable("projectId") String projectId){
-		Project project = projectService.deleteProjectByIdentifier(projectId.toUpperCase());
-		return new ResponseEntity<Project>(project, HttpStatus.OK);
+	public ResponseEntity<?> deleteProjectById(@PathVariable("projectId") String projectId ,Principal principal){
+		projectService.deleteProjectByIdentifier(projectId.toUpperCase(), principal.getName());
+		return new ResponseEntity<String>("Project: "+projectId +" is deleted", HttpStatus.OK);
 	}
 	
-	@PutMapping("/{projectId}")
-	public ResponseEntity<?> updateProjectById(@Valid @RequestBody Project project,   BindingResult result,  
-			@PathVariable("projectId") String projectId){
-		System.out.println(result);
+	@PutMapping("")
+	public ResponseEntity<?> updateProjectById(@Valid @RequestBody Project project,  BindingResult result,  Principal principal){
 		ResponseEntity<?> mapValidationService = validationErrorService.mapValidationService(result);
 		if(mapValidationService!=null){
 			return mapValidationService;
 		}
-		Project updatedProject = projectService.updateByProjectId(project, projectId.toUpperCase());
+		Project updatedProject = projectService.updateByProjectId(project, project.getProjectIdentifier().toUpperCase(), principal.getName());
 		return new ResponseEntity<Project>(updatedProject, HttpStatus.OK);
 	}
 }
