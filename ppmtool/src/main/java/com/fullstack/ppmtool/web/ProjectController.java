@@ -1,6 +1,6 @@
 package com.fullstack.ppmtool.web;
 
-
+import java.security.Principal;
 
 import javax.validation.Valid;
 
@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 
+
 import com.fullstack.ppmtool.domain.Project;
 import com.fullstack.ppmtool.repositories.ProjectRepository;
 import com.fullstack.ppmtool.services.MapValidationErrorService;
@@ -46,12 +47,13 @@ public class ProjectController {
 	private MapValidationErrorService validationErrorService;;
 	
 	@PostMapping("")
-	public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result){
+	public ResponseEntity<?> createNewProject(@Valid @RequestBody Project project, BindingResult result, Principal principal){
+		//System.out.println(principal+"+++++++++++++++++++++++++++++++++++++++++");
 		ResponseEntity<?> mapValidationService = validationErrorService.mapValidationService(result);
 		if(mapValidationService!=null){
 			return mapValidationService;
 		}
-		Project saveOrUpdateProject = projectService.saveProject(project);
+		Project saveOrUpdateProject = projectService.saveProject(project, principal.getName());
 		return new ResponseEntity<Project> (saveOrUpdateProject, HttpStatus.CREATED);
 	}
 	

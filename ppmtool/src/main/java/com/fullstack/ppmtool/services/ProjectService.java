@@ -5,16 +5,24 @@ import org.springframework.stereotype.Service;
 
 import com.fullstack.ppmtool.domain.Backlog;
 import com.fullstack.ppmtool.domain.Project;
+import com.fullstack.ppmtool.domain.User;
 import com.fullstack.ppmtool.exceptions.ProjectIdException;
 import com.fullstack.ppmtool.repositories.ProjectRepository;
+import com.fullstack.ppmtool.repositories.UserRepository;
 
 @Service
 public class ProjectService {
 	@Autowired
 	private ProjectRepository projectRepository;
+	@Autowired
+	private UserRepository userRepository;
 	
-	public Project saveProject(Project project){
+	public Project saveProject(Project project, String username){
 		try{
+			User user = userRepository.findByUsername(username);
+			
+			project.setUser(user);
+			project.setProjectLeader(user.getUsername());
 			project.setProjectIdentifier(project.getProjectIdentifier().toUpperCase());
 			if(project.getId()==null){
 				Backlog backlog = new Backlog(); 
