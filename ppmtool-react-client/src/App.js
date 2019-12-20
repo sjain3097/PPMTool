@@ -10,6 +10,9 @@ import store from './store';
 import UpdateProject from './component/project/UpdateProject';
 import AddProjectTask from './component/project/AddProjectTask';
 import UpdateProjectTask from './component/project/UpdateProjectTask';
+import Landing from './component/layout/Landing'
+import Login from './component/userManagement/Login'
+import Register from './component/userManagement/Register'
 class App extends Component {
   state = {  }
   render() {  
@@ -18,7 +21,18 @@ class App extends Component {
         <Router>
           <div className="app">
           <Header />
+          {
+            //private routes
+          }
+          <Route exact path="/" component={Landing}></Route>
+          <Route exact path="/login" component={Login}></Route>
+          {/* <Route exact path="/register" component={Register}></Route>
+           */}
+          {
+            //public routes
+          }
             <Provider store={store}>
+              <Route exact path="/register" component={Register}></Route>
               <Route exact path="/dashboard" component={Dashboard}/>
               <Route exact path="/addProject" component={AddProject}/>
               <Route exact path="/projectBoard/:projectIdentifier" component={ProjectBoard}/>
