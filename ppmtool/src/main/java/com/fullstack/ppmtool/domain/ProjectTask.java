@@ -17,6 +17,7 @@ import javax.validation.constraints.NotBlank;
 
 import org.hibernate.annotations.ManyToAny;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -31,8 +32,14 @@ public class ProjectTask {
 	private String acceptanceCriteria ;
 	private String status;
 	private Integer priority;
+	@JsonFormat(pattern="yyyy-MM-dd")
 	private Date dueDate;
-	
+	@Column(updatable=false)
+	private String projectIdentifier;
+	@JsonFormat(pattern="yyyy-MM-dd")
+	private Date createAt;
+	@JsonFormat(pattern="yyyy-MM-dd")
+	private Date updateAt;
 	//Many to one with backlog
 	@ManyToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="backlog_id", updatable=false, nullable=false )
@@ -127,10 +134,7 @@ public class ProjectTask {
 		this.updateAt = updateAt;
 	}
 
-	@Column(updatable=false)
-	private String projectIdentifier;
-	private Date createAt;
-	private Date updateAt;
+	
 
 	public ProjectTask(){
 	}

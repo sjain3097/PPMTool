@@ -26,36 +26,51 @@ class ProjectBoard extends Component {
         const projectTasks = this.props.projectTasks;
         console.log(errors);
         const id = this.props.match.params.projectIdentifier;
-        const backlogs =
+
+        const boardAlgo =(errors, projectTasks)=> {
+            if(projectTasks.length < 1){
+                if(errors.projectNotFound){
+                    return (
+                        <div className="alert alert-danger text-center" role="alert">
+                            {errors.projectNotFound}
+                        </div>
+                    ); 
+                } 
+                if(errors.projectIdentifier){
+                    return (
+                        <div className="alert alert-danger text-center" role="alert">
+                            {errors.projectIdentifier}
+                        </div>
+                    ); 
+                }
+                else{
+                    return(
+                        <div className="alert alert-primary text-center" role="alert">
+                            No Project tasks on this board
+                        </div>
+                    ) 
+    
+                }
+            }
+            else{
+                return <Backlog projectTasks={projectTasks}/>
+            }
+     
+        }
+        let BoardContent = boardAlgo(errors, projectTasks);
+        return (
             <div>
                 <a href={`/addProjectTask/${id}`} className="btn btn-primary mb-3">
-                    <i className="fas fa-plus-circle"> Create Project Task</i>
+                    <i className="fa fa-plus-circle"> Create Project Task</i>
                 </a>
                 
                 <br />
                 <hr />
                 
-                <Backlog projectTasks={projectTasks}/>
+                {BoardContent}
             </div>
-            if(projectTasks.length < 1  && errors.projectNotFound){
-                return (
-                    <div className="alert alert-danger text-center" role="alert">
-                        {errors.projectNotFound}
-                    </div>
-                );
-            } 
-            else if (projectTasks.length < 1 ){
-                return(
-                    <div className="alert alert-primary text-center" role="alert">
-                        No Project tasks on this board
-                    </div>
-                ) 
-
-            }
-            else{
-                return backlogs
-            }
-        
+            );
+               
     }
 }
  
