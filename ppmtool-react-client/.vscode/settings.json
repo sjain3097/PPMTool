@@ -1,0 +1,5 @@
+{
+    "typescript.tsserver.trace": "verbose",
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "typescript.tsserver.log": "verbose"
+}
